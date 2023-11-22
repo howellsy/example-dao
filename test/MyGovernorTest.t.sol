@@ -47,9 +47,31 @@ contract MyGovernorTest is Test {
         box.transferOwnership(address(timelock));
     }
 
+    function testDelegateCorrectlyUpdatesVotingPower() public {
+        uint256 votingPower = govToken.getVotes(VOTER);
+        assert(votingPower == INITIAL_SUPPLY);
+
+        uint256 newVotingPower = 50 ether;
+        govToken.mint(VOTER, newVotingPower);
+        govToken.delegate(VOTER);
+
+        votingPower = govToken.getVotes(VOTER);
+        assert(votingPower == INITIAL_SUPPLY + newVotingPower);
+    }
+
     function testCannotUpdateBoxWithoutGovernance() public {
         vm.expectRevert();
         box.store(1);
+    }
+
+    function testCanGrantAndRevokeARole() public {
+        bytes32 role = keccak256("SOME_ROLE");
+        address account = address(0x123);
+        timelock.grantRole(role, account);
+        assert(timelock.hasRole(role, account));
+
+        timelock.revokeRole(role, account);
+        assert(!timelock.hasRole(role, account));
     }
 
     function testGovernanceUpdatesBox() public {
