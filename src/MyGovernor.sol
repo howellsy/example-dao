@@ -20,9 +20,27 @@ contract MyGovernor is
     GovernorVotesQuorumFraction,
     GovernorTimelockControl
 {
+    /**
+     * @notice The delay between the proposal being created and the vote starting
+     * @dev Hardcoded to 1 day
+     */
+    uint48 public constant INITIAL_VOTING_DELAY = 7200;
+
+    /**
+     * @notice The duration of the voting period
+     * @dev Hardcoded to 1 week
+     */
+    uint32 public constant VOTING_PERIOD = 50400; // 1 week
+
+    /**
+     * @notice The minimum number of votes required for a proposal to succeed
+     * @dev Hardcoded to 0
+     */
+    uint256 public constant PROPOSAL_THRESHOLD = 0;
+
     constructor(IVotes _token, TimelockController _timelock)
         Governor("MyGovernor")
-        GovernorSettings(7200, /* 1 day */ 50400, /* 1 week */ 0)
+        GovernorSettings(INITIAL_VOTING_DELAY, VOTING_PERIOD, PROPOSAL_THRESHOLD)
         GovernorVotes(_token)
         GovernorVotesQuorumFraction(4)
         GovernorTimelockControl(_timelock)
