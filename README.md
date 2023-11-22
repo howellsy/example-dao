@@ -1,66 +1,65 @@
-## Foundry
+# ExampleDAO
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A working example of how a contract `Box.sol` could be 100% controlled by a DAO. In this example:
 
-Foundry consists of:
+-   We leverage [OpenZeppelin's on-chain governance contracts](https://docs.openzeppelin.com/contracts/4.x/api/governance) to deploy an on-chain voting protocol similar to [Compound’s Governor Alpha & Bravo](https://docs.compound.finance/v2/governance/).
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+-   An ERC20 token `GovToken.sol` is used for voting on proposals.
 
-## Documentation
+-   Every transaction that the DAO wants to send must be voted on.
 
-https://book.getfoundry.sh/
+## ⚒️ Built with Foundry
 
-## Usage
+This project is built with [Foundry](https://github.com/foundry-rs/foundry) a portable and modular toolkit for Ethereum application development, which is required to build and deploy the project.
 
-### Build
+## 📂 Summary of contracts
 
-```shell
-$ forge build
+### `Box.sol`
+
+-   A simple storage contract that holds a single unsigned integer.
+
+-   This contract will be 100% controlled by the DAO.
+
+### `GovToken.sol`
+
+-   An ERC20 token for voting in the DAO.
+
+### `MyGovernor.sol`
+
+-   A governor contract that allows token holders to vote on proposals.
+
+### `Timelock.sol`
+
+-   A timelock controller contract that allows certain actions to be delayed for a specific period of time.
+
+## 🏗️ Getting started
+
+Install project dependencies
+
+```
+make install
 ```
 
-### Test
+Build the project
 
-```shell
-$ forge test
+```
+make build
 ```
 
-### Format
+## 🧪 Running tests
 
-```shell
-$ forge fmt
+The project includes a suite of unit tests to test various aspects of the contracts' functionality including:
+
+➡️ updating the voting power
+
+➡️ granting and revoking roles
+
+➡️ updating the Box contract without governance
+
+➡️ updating the Box contract with governance
+
+To run the tests
+
 ```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+make test
 ```
